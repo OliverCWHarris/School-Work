@@ -22,7 +22,7 @@ class Breakthrough():
         self.__CurrentLock = Lock()
         self.__LockSolved = False
         self.__LoadLocks()
-    
+
     def PlayGame(self):
         if len(self.__Locks) > 0:
             self.__SetupGame()
@@ -66,7 +66,7 @@ class Breakthrough():
             return True
         else:
             return False
-    
+
     def __SetupGame(self):
         Choice = input("Enter L to load a game from a file, anything else to play a new game:> ").upper()
         if Choice == "L":
@@ -80,7 +80,7 @@ class Breakthrough():
             self.__AddDifficultyCardsToDeck()
             self.__Deck.Shuffle()
             self.__CurrentLock = self.__GetRandomLock()
-    
+
     def __PlayCardToSequence(self, CardChoice):
         if self.__Sequence.GetNumberOfCards() > 0:
             if self.__Hand.GetCardDescriptionAt(CardChoice - 1)[0] != self.__Sequence.GetCardDescriptionAt(self.__Sequence.GetNumberOfCards() - 1)[0]:
@@ -104,7 +104,7 @@ class Breakthrough():
             if self.__CurrentLock.CheckIfConditionMet(SequenceAsString):
                 return True
         return False
-    
+
     def __SetupCardCollectionFromGameFile(self, LineFromFile, CardCol):
         if len(LineFromFile) > 0:
             SplitLine = LineFromFile.split(",")
@@ -119,7 +119,7 @@ class Breakthrough():
                 else:
                     CurrentCard = ToolCard(Item[0], Item[2], CardNumber)
                     CardCol.AddCard(CurrentCard)
-    
+
     def __SetupLock(self, Line1, Line2):
         SplitLine = Line1.split(";")
         for Item in SplitLine:
@@ -129,7 +129,7 @@ class Breakthrough():
         for Count in range(0, len(SplitLine)):
             if SplitLine[Count] == "Y":
                 self.__CurrentLock.SetChallengeMet(Count, True)
-    
+
     def __LoadGame(self, FileName):
         try:
             with open(FileName) as f:          
@@ -167,7 +167,7 @@ class Breakthrough():
                     LineFromFile = f.readline().rstrip()
         except:
             print("File not loaded")
-        
+
     def __GetRandomLock(self):
         return self.__Locks[random.randint(0, len(self.__Locks) - 1)]
 
@@ -209,7 +209,7 @@ class Breakthrough():
         print()
         Choice = input("(D)iscard inspect, (U)se card:> ").upper()
         return Choice
-    
+
     def __AddDifficultyCardsToDeck(self):
         for Count in range(5):
             self.__Deck.AddCard(DifficultyCard())
@@ -235,7 +235,7 @@ class Breakthrough():
             self.__Deck.AddCard(NewCard)
             NewCard = ToolCard("K", "c")
             self.__Deck.AddCard(NewCard)
-    
+
     def __MoveCard(self, FromCollection, ToCollection, CardNumber):
         Score  = 0
         if FromCollection.GetName() == "HAND" and ToCollection.GetName() == "SEQUENCE":
@@ -253,7 +253,7 @@ class Challenge():
     def __init__(self):
         self._Met = False
         self._Condition = []
-    
+
     def GetMet(self): 
         return self._Met
 
@@ -269,7 +269,7 @@ class Challenge():
 class Lock():
     def __init__(self):
         self._Challenges = []
-        
+
     def AddChallenge(self, Condition):
         C = Challenge()
         C.SetCondition(Condition)
@@ -298,7 +298,7 @@ class Lock():
             if not C.GetMet():
                 return False
         return True
-    
+
     def CheckIfConditionMet(self, Sequence):
         for C in self._Challenges:
             if not C.GetMet() and Sequence == self.__ConvertConditionToString(C.GetCondition()):
@@ -308,16 +308,16 @@ class Lock():
 
     def SetChallengeMet(self, Pos, Value):
         self._Challenges[Pos].SetMet(Value)
-    
+
     def GetChallengeMet(self, Pos): 
         return self._Challenges[Pos].GetMet()
-    
+
     def GetNumberOfChallenges(self): 
         return len(self._Challenges)
 
 class Card():
     _NextCardNumber = 0
-    
+
     def __init__(self):
         self._CardNumber = Card._NextCardNumber
         Card._NextCardNumber += 1
@@ -347,7 +347,7 @@ class ToolCard(Card):
         elif len(args) == 3:
             self._CardNumber = args[2]
         self.__SetScore()
-        
+
     def __SetScore(self):
         if self._ToolType == "K":
             self._Score = 3
@@ -355,7 +355,7 @@ class ToolCard(Card):
             self._Score = 2
         elif self._ToolType == "P":
             self._Score = 1
-            
+
     def GetDescription(self):
         return self._ToolType + " " + self._Kit
 
@@ -366,7 +366,7 @@ class DifficultyCard(Card):
             super(DifficultyCard, self).__init__()
         elif len(args) == 1:
             self._CardNumber = args[0]
-        
+
     def GetDescription(self):
         return self._CardType
 
@@ -408,7 +408,7 @@ class CardCollection():
 
     def AddCard(self, C):
         self._Cards.append(C)
-    
+
     def GetNumberOfCards(self): 
         return len(self._Cards)
 
@@ -436,7 +436,7 @@ class CardCollection():
         for Count in range(Size):
             LineOfDashes += "------"
         return LineOfDashes
-    
+
     def GetCardDisplay(self):
         CardDisplay = "\n" + self._Name + ":"
         if len(self._Cards) == 0:

@@ -1,0 +1,6 @@
+person a
+5
+person b
+3
+person c
+7
